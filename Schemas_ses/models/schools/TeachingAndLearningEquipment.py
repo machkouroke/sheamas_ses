@@ -27,6 +27,7 @@ class CollectiveEquipment(AnnexeModel):
     dictionaries: Optional[int]
     polyhedron_boxes: Optional[int]
     photocopiers: Optional[int]
+    terrestrial_globes: Optional[int]
 
 
 class TeachingAndLearningEquipment(AnnexeModel):
