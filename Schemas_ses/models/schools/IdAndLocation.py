@@ -22,7 +22,6 @@ class ReferenceYear(AnnexeModel):
 
 class LocaPeda(BaseModel):
     """Se réfère à la section Localisation dans le Réseau d'Animation Pédagogique"""
-    region_pedagogique: Optional[str]
     circonscription_scolaire: Optional[str]
     zone_pedagogique: Optional[Annotated[int, Field(strict=True, ge=1, le=6)]]
     unite_pedagogique: Optional[str]
