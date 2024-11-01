@@ -27,6 +27,11 @@ class SourceEau(str, Enum):
     CITERNE = "Citerne"
 
 
+class SourceElectricity(str, Enum):
+    SBEE = "SBEE"
+    SOLAIRE = "Solaire"
+
+
 class SchoolPropertyTitle(str, Enum):
     TITRE_FONCIER = "Titre foncier"
     ACTE_DE_DONATION = "Acte de donation"

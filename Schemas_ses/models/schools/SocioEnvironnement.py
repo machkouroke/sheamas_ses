@@ -1,6 +1,6 @@
 from typing_extensions import Optional
 
-from Schemas_ses.enumeration.enums import Distance, SourceEau, TypePollution
+from Schemas_ses.enumeration.enums import Distance, SourceEau, TypePollution, SourceElectricity
 from Schemas_ses.models.model import AnnexeModel
 from Schemas_ses.type.types import Length
 
@@ -29,7 +29,7 @@ class SchoolAccessibility(AnnexeModel):
 
 class ServicesAndEnvironment(AnnexeModel):
     is_school_flood_prone: Optional[bool]
-    is_locality_electrified: Optional[bool]
+    is_locality_electrified: Optional[list[SourceElectricity]]
     water_supply: Optional[list[SourceEau]]
     is_school_environment_polluted: Optional[list[TypePollution]]
 

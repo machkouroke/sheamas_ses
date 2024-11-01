@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "schemas_ses"
-version = "0.3.6"
+version = "0.3.7"
 description = ""
 authors = ["machkouroke <machkour20.mo1@gmail.com>"]
 readme = "README.md"
