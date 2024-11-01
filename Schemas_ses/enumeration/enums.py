@@ -65,4 +65,4 @@ class SchoolKind(str, Enum):
     Classique = 'Classique'
     Inclusif = 'Inclusif'
     Specialise = 'Spécialisé'
-    Autre = 'Autre'
+    Autres = 'Autres'
