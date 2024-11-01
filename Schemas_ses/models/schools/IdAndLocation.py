@@ -33,6 +33,8 @@ class LocaTerritoire(BaseModel):
     commune: Optional[str]
     arrondissement: Optional[str]
     village: Optional[str]
+    adresse: Optional[str]
+    postal_code: Optional[str]
     telephone: Optional[str]
     email: Optional[EmailStr]
 
