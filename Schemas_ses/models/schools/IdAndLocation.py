@@ -35,7 +35,7 @@ class LocaTerritoire(BaseModel):
     village: Optional[str]
     adresse: Optional[str]
     postal_code: Optional[str]
-    telephone: Optional[str]
+    telephone: Optional[list[str]]
     email: Optional[EmailStr]
 
 
