@@ -10,7 +10,7 @@ class PedagogicalMaterial(AnnexeModel):
     quantities_by_grade: Dict[str, Optional[int]]
 
 
-class TeacherPedagogicalMaterials(AnnexeModel):
+class ListPedagogicalMaterials(AnnexeModel):
     materials: List[PedagogicalMaterial]
 
 
@@ -33,4 +33,5 @@ class CollectiveEquipment(AnnexeModel):
 class TeachingAndLearningEquipment(AnnexeModel):
     """"""
     collective_equipment: CollectiveEquipment
-    teacher_pedagogical_materials: TeacherPedagogicalMaterials
+    teacher_pedagogical_materials: ListPedagogicalMaterials
+    student_pedagogical_materials: ListPedagogicalMaterials
