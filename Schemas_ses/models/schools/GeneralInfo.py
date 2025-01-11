@@ -9,6 +9,7 @@ class PropertyAndBoundaries(BaseModel):
     """Se réfère à la sous section Propriété et délimitations de l'école"""
     school_property_title: Optional[list[SchoolPropertyTitle]]
     is_school_area_demarcated: Optional[bool]
+    school_area_surface: Optional[float]
     is_school_area_fenced: Optional[bool]
 
 
