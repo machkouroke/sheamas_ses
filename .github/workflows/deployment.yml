@@ -3,13 +3,13 @@ name: Publish to PyPI
 on:
   push:
     branches:
-      - main  # Remplacez 'main' par la branche que vous utilisez pour déployer
+      - main  # Remplacez 'main' par votre branche de déploiement
 
 jobs:
-  publish:
-    name: Publish Package
+  check-and-publish:
+    name: Check Version and Publish
     runs-on: ubuntu-latest
-    
+
     steps:
       # Étape 1 : Checkout le code
       -   name: Checkout code
@@ -19,16 +19,46 @@ jobs:
       -   name: Set up Python
           uses: actions/setup-python@v4
           with:
-            python-version: 3.11  # Remplacez par la version de Python souhaitée
+            python-version: 3.12  # Remplacez par votre version de Python
       
-      # Étape 3 : Installer Poetry
+      # Étape 3 : Installer curl pour interroger PyPI
+      -   name: Install curl
+          run: sudo apt-get install -y curl
+      
+      # Étape 4 : Vérifier si la version existe déjà sur PyPI
+      -   name: Check if version exists on PyPI
+          id: check-version
+          run: |
+            PACKAGE_NAME=$(grep '^name =' pyproject.toml | awk -F '"' '{print $2}')
+            VERSION=$(grep '^version =' pyproject.toml | awk -F '"' '{print $2}')
+            echo "Checking if $PACKAGE_NAME version $VERSION exists on PyPI..."
+            
+            RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://pypi.org/project/$PACKAGE_NAME/$VERSION/)
+            
+            if [ "$RESPONSE" = "200" ]; then
+              echo "Version $VERSION of $PACKAGE_NAME already exists on PyPI."
+              echo "exists=true" >> $GITHUB_OUTPUT
+              exit 0
+            else
+              echo "Version $VERSION of $PACKAGE_NAME does not exist on PyPI."
+              echo "exists=false" >> $GITHUB_OUTPUT
+            fi
+      
+      # Étape 5 : Ne rien faire si la version existe déjà
+      -   name: Stop if version exists
+          if: steps.check-version.outputs.exists == 'true'
+          run: echo "Version already exists. Skipping deployment."
+      
+      # Étape 6 : Installer Poetry
       -   name: Install Poetry
+          if: steps.check-version.outputs.exists == 'false'
           run: |
             curl -sSL https://install.python-poetry.org | python3 -
             echo 'export PATH="$HOME/.local/bin:$PATH"' >> $GITHUB_ENV
       
-      # Étape 4 : Régénérer poetry.lock si nécessaire
+      # Étape 7 : Régénérer poetry.lock si nécessaire
       -   name: Regenerate poetry.lock if needed
+          if: steps.check-version.outputs.exists == 'false'
           run: |
             if poetry lock --check; then
               echo "Lock file is up to date."
@@ -36,14 +66,16 @@ jobs:
               poetry lock
             fi
       
-      # Étape 5 : Installer les dépendances
+      # Étape 8 : Installer les dépendances
       -   name: Install dependencies
+          if: steps.check-version.outputs.exists == 'false'
           run: poetry install --no-root
       
-      # Étape 6 : Construire et publier le package
+      # Étape 9 : Construire et publier le package
       -   name: Publish package to PyPI
+          if: steps.check-version.outputs.exists == 'false'
           env:
-            POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }} # Définissez ce secret dans votre repo
+            POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}  # Configurez ce secret
           run: |
             poetry build
             poetry publish --build
