@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing_extensions import Literal, Optional
 
 from Schemas_ses.enumeration.enums import StudiesLevel, LocalType
@@ -25,7 +25,7 @@ class Office(AnnexeModel):
     roof_material: Optional[Literal["Tôles", "Tuiles / Fibro ciment / Dalles", "Banco", "Paille", "Sans toit"]]
     roof_condition: Optional[Good_or_bad]
     door_material: Optional[Literal["Métallique", "Tôle / Bois", "Non installées"]]
-    wall_nature: Optional[Literal["Persiennes", "Volets", "Claustras", "Non installées"]]
+    window_nature: Optional[Literal["Persiennes", "Volets", "Claustras", "Non installées"]]
     funding: Optional[Literal["Collectivités locales", "APE", "Aide extérieure", "Autres / Non déterminé"]]
     teacher_furniture: TeacherFurniture
     # add student_furniture

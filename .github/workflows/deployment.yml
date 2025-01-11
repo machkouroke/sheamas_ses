@@ -1,0 +1,40 @@
+name: Publish to PyPI
+
+on:
+    push:
+        branches:
+            - main  # Remplacez 'main' par la branche que vous utilisez pour déployer
+
+jobs:
+    publish:
+        name: Publish Package
+        runs-on: ubuntu-latest
+        
+        steps:
+            # Étape 1 : Checkout le code
+            -   name: Checkout code
+                uses: actions/checkout@v3
+            
+            # Étape 2 : Configurer Python
+            -   name: Set up Python
+                uses: actions/setup-python@v4
+                with:
+                    python-version: 3.11  # Remplacez par la version de Python souhaitée
+            
+            # Étape 3 : Installer Poetry
+            -   name: Install Poetry
+                run: |
+                    curl -sSL https://install.python-poetry.org | python3 -
+                    echo 'export PATH="$HOME/.local/bin:$PATH"' >> $GITHUB_ENV
+            
+            # Étape 4 : Installer les dépendances
+            -   name: Install dependencies
+                run: poetry install --no-root
+            
+            # Étape 5 : Construire et publier le package
+            -   name: Publish package to PyPI
+                env:
+                    POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }} # Définissez ce secret dans votre repo
+                run: |
+                    poetry build
+                    poetry publish --build
