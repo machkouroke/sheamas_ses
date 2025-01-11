@@ -77,5 +77,4 @@ jobs:
                 env:
                     POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN }}  # Configurez ce secret
                 run: |
-                    poetry build
                     poetry publish --build
